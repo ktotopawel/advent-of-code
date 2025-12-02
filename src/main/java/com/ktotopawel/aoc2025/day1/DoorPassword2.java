@@ -14,26 +14,32 @@ public class DoorPassword2 {
         int pos = 50;
         int res = 0;
         for (String instruction : instructions) {
+
+            System.out.println("Position: " + pos);
             System.out.println("Instruction: " + instruction);
-            char dir = instruction.charAt(0);
+
             int clicks = Integer.parseInt(instruction.replaceAll("[\\D]", ""));
+            char dir = instruction.charAt(0);
             int passedZeroes = Math.floorDiv(clicks, 100);
-            res += passedZeroes;
-            System.out.println("Added: " + passedZeroes);
-            clicks = clicks % 100;
-            int newPos = getPosition(pos, dir, clicks);
-            if (newPos == 0) {
-                System.out.println("Added: " + "1");
-                res++;
+
+            System.out.println("Full rotations: " + passedZeroes);
+
+            int newPos = dir == 'R' ? pos + (clicks % 100) : pos - (clicks % 100);
+
+            System.out.println("Newpos: " + newPos);
+
+            if (pos != 0 && (newPos <= 0 || newPos >= 100)) {
+                passedZeroes++;
             }
-            System.out.println("New pos: " + newPos);
-            System.out.println("Ans after instruction: " + res);
-            pos = newPos;
+            ;
+            pos = (newPos + 100) % 100;
+
+            res += passedZeroes;
+
+            System.out.println("Added: " + passedZeroes);
+            System.out.println("Ans: " + res);
+            System.out.println();
         }
         return res;
-    }
-
-    private static int getPosition(int curPos, char dir, int clicks) {
-        return dir == 'R' ? (curPos + clicks) % 100 : (curPos - clicks + 100) % 100;
     }
 }
